@@ -2,22 +2,27 @@ import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-// جني من اللخر: لصق الرابط ديال ngrok ديريكت هنا بحال اللي درتي ف الـ API
 const BASE_URL = "https://chancelled-imaginative-dagmar.ngrok-free.dev";
 
 const NewArrivalsCard = ({ product, isNew }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // دالة لجلب الصور مع حماية في حالة كانت الصور undefined
+  // 1. كنأكدو بلي كاع البيانات كاينين (حماية)
+  if (!product) return null;
+
+  // 2. دالة جلب الصور مصلحة لتعمل مع Strapi V5
   const getImgUrl = (index) => {
-    const images = product?.images;
+    // Strapi V5 كيقدر يصيفط الصور مباشرة في images
+    const images = product.images;
+
+    // تأكد بلي كاين مصفوفة صور وبلي الصورة المطلوبة كاينا
     if (!images || !images[index]) {
       return "https://via.placeholder.com/600x800?text=ELCHAPO44";
     }
-    return `${BASE_URL}${images[index].url}`;
-  };
 
-  if (!product) return null; // حماية إضافية
+    const imageUrl = images[index].url;
+    return `${BASE_URL}${imageUrl}`;
+  };
 
   return (
     <div
@@ -26,7 +31,7 @@ const NewArrivalsCard = ({ product, isNew }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link
-        to={`/product/${product.documentId}`}
+        to={`/product/${product.documentId || product.id}`}
         className="block overflow-hidden relative"
       >
         {isNew && (
@@ -65,6 +70,7 @@ const NewArrivalsCard = ({ product, isNew }) => {
 
         <div className="pt-6 pb-4 space-y-1">
           <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
+            {/* تأكد بلي الـ Category موصلة ف الـ API populate */}
             {product.category?.name || "Streetwear"}
           </p>
           <h3 className="text-sm font-bold uppercase tracking-tight text-black mt-1">
@@ -74,11 +80,6 @@ const NewArrivalsCard = ({ product, isNew }) => {
             <span className="text-sm font-black text-black">
               {product.price} DH
             </span>
-            {product.firstPrice && (
-              <span className="text-[11px] text-zinc-400 line-through">
-                {product.firstPrice} DH
-              </span>
-            )}
           </div>
         </div>
       </Link>
