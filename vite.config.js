@@ -10,12 +10,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server: {
-    // هاد السطر هو اللي كيهمنا
-    allowedHosts: ["chancelled-imaginative-dagmar.ngrok-free.dev"],
-    proxy: {
-      '/api': 'http://localhost:1337',
-      '/uploads': 'http://localhost:1337',
-    }
-  }
 })

@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import Loading from "./Loading";
 import NewArrivalsCard from "./NewArrivalsCard";
 import EmptyState from "./EmptyState";
+import { API_URL } from "@/lib/utils";
 
 const CategoryDetails = () => {
   const { documentId } = useParams();
@@ -16,9 +17,7 @@ const CategoryDetails = () => {
     const fetchProductDetails = async () => {
       try {
         const res = await axios.get(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/categories/${documentId}?populate[products][populate]=images`
+          `${API_URL}/categories/${documentId}?populate[products][populate]=images`
         );
         setLoading(true);
         setCategoryDetails(res.data.data);

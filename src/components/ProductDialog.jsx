@@ -46,7 +46,7 @@ const ProductDialog = ({ product, isOpen, onClose }) => {
                 className="w-full h-full object-cover"
                 src={
                   product.images?.[0]?.url
-                    ? `${import.meta.env.VITE_API_URL}${product.images[0].url}`
+                    ? `${product.images[0].url}`
                     : "https://via.placeholder.com/384x192?text=No+Image"
                 }
                 alt={product.name}

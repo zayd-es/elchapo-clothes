@@ -1,49 +1,40 @@
+import { API_URL } from "@/lib/utils";
 import axios from "axios";
-
-// الرابط الأساسي: كيقرأ من Vercel أو كيرجع لـ Localhost
-const BASE_URL = "https://chancelled-imaginative-dagmar.ngrok-free.dev";
-export const geNewArrivalsProducts = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}/api/products?filters[NewArrivals]=true&populate=*`);
+  export const geNewArrivalsProducts = async () => {
+      try {
+        const data = await axios.get(`${API_URL}/products?filters[NewArrivals]=true&populate=*`);
+        // console.log(data)
+    return {
+        success:{
+            data: data?.data?.data,
+            meta: data?.data?.meta
+        },
+        error:null
+    }
+      } catch (error) {
+   return{ 
+       success:null,
+       error:error?.response?.data?.error?.message || 'Data Not Found'
+   }
+      }
+    };
+    export const getCategories = async () => {
+      try {
+        const res = await axios.get(
+               `${API_URL}/categories?populate[products][populate]=images`
     
-    // Strapi V5 كيرجع البيانات ف response.data.data
-    // ولكن بعض المرات الترتيب كيختلف، هاد السطر كايضمن لينا ديما نلقاو المصفوفة (Array)
-    const result = response.data.data || response.data;
-
-    return {
-      success: {
-        data: Array.isArray(result) ? result : [], // كنأكدو بلي راها Array باش .map() ما تفرقعش
-        meta: response.data.meta || {}
-      },
-      error: null
-    };
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return {
-      success: { data: [], meta: {} }, // كنرجعو Array خاوية ف حالة الخطأ باش السيت ما يتبلوكاش
-      error: error?.response?.data?.error?.message || 'Data Not Found'
-    };
-  }
-};
-
-export const getCategories = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}/api/categories?populate[products][populate]=images`);
+        );
     
-    // نفس المنطق لضمان وصول البيانات بشكل صحيح
-    const result = response.data.data || response.data;
-
-    return {
-      success: Array.isArray(result) ? result : [],
-      meta: response.data.meta || {},
-      error: null,
+        return {
+          success: res.data.data, // 👈 directly return array
+          meta: res.data.meta,
+          error: null,
+        };
+      } catch (error) {
+        return {
+          success: null,
+          meta: null,
+          error: error?.response?.data?.error?.message || "Data Not Found",
+        };
+      }
     };
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return {
-      success: [],
-      meta: null,
-      error: error?.response?.data?.error?.message || "Data Not Found",
-    };
-  }
-};

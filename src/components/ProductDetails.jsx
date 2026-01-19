@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductDetailsCard from "./ProductDetailsCard";
+import { API_URL } from "@/lib/utils";
 
 const ProductDetails = () => {
   const [productDetails, setProductDetails] = useState([]);
@@ -11,9 +12,7 @@ const ProductDetails = () => {
     const fetchProductDetails = async () => {
       try {
         const res = await axios.get(
-          `${
-            import.meta.env.VITE_API_URL
-          }/api/products/${documentId}?populate=*`
+          `${API_URL}/products/${documentId}?populate=*`
         );
         setProductDetails(res.data.data); // Changed from res to res.data
       } catch (error) {

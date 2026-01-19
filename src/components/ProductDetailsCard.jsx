@@ -110,9 +110,7 @@ const ProductDetailsCard = ({ product }) => {
           >
             <img
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
-              src={`${import.meta.env.VITE_API_URL}${
-                product.images[selectedImage]?.url
-              }`}
+              src={`${product.images[selectedImage]?.url}`}
               alt={product.name}
             />
             {/* Discount Badge overlay */}
