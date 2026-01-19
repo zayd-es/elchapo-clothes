@@ -1,8 +1,7 @@
 import axios from "axios";
 
 // الرابط الأساسي: كيقرأ من Vercel أو كيرجع لـ Localhost
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:1337";
-
+const BASE_URL = "https://chancelled-imaginative-dagmar.ngrok-free.dev";
 export const geNewArrivalsProducts = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/api/products?filters[NewArrivals]=true&populate=*`);
