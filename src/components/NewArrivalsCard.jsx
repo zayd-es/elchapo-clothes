@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
-
 import { Link } from "react-router-dom";
+
+// هاد السطر كايعرف الرابط أوتوماتيكيا: واش ngrok (في Vercel) ولا localhost (في البيسي)
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:1337";
 
 const NewArrivalsCard = ({ product, isNew }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  // دالة بسيطة كتلصق الرابط الأساسي مع رابط التصويرة
   const getImgUrl = (index) => {
-    if (!product.images || !product.images[index])
-      return "https://via.placeholder.com/600x800?text=ELCHAPO44";
-    return `${product.images[index].url}`;
+    const image = product.images?.[index];
+    if (!image) return "https://via.placeholder.com/600x800?text=ELCHAPO44";
+
+    // نلصقو BASE_URL مع الـ url ديال التصويرة ديريكت
+    return `${BASE_URL}${image.url}`;
   };
+
   return (
     <div
       className="group relative bg-white"
@@ -20,14 +27,12 @@ const NewArrivalsCard = ({ product, isNew }) => {
         to={`/product/${product.documentId}`}
         className="block overflow-hidden relative"
       >
-        {/* Subtle Luxury Badge */}
         {isNew && (
           <div className="absolute top-4 left-4 bg-black text-white text-[9px] font-black px-3 py-1.5 tracking-[0.2em] z-20">
             NEW
           </div>
         )}
 
-        {/* Image Container with Smooth Swap */}
         <div className="relative aspect-[3/4] overflow-hidden bg-zinc-50">
           <img
             className={`w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
@@ -36,6 +41,7 @@ const NewArrivalsCard = ({ product, isNew }) => {
             src={getImgUrl(0)}
             alt={product.name}
           />
+
           {product.images[1] && (
             <img
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
@@ -46,7 +52,6 @@ const NewArrivalsCard = ({ product, isNew }) => {
             />
           )}
 
-          {/* "Quick View" Overlay - Appears on Hover */}
           <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
             <div className="w-full bg-white/90 backdrop-blur-sm py-3 text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
               <span className="text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2">
@@ -56,25 +61,19 @@ const NewArrivalsCard = ({ product, isNew }) => {
           </div>
         </div>
 
-        {/* Content Section */}
         <div className="pt-6 pb-4 space-y-1">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
-                {product.category?.name || "Streetwear"}
-              </p>
-              <h3 className="text-sm font-bold uppercase tracking-tight text-black mt-1">
-                {product.name}
-              </h3>
-            </div>
-          </div>
-
+          <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
+            {product.category?.name || "Streetwear"}
+          </p>
+          <h3 className="text-sm font-bold uppercase tracking-tight text-black mt-1">
+            {product.name}
+          </h3>
           <div className="flex items-center gap-3 pt-2">
             <span className="text-sm font-black text-black">
               {product.price} DH
             </span>
             {product.firstPrice && (
-              <span className="text-[11px] text-zinc-400 line-through tracking-tighter">
+              <span className="text-[11px] text-zinc-400 line-through">
                 {product.firstPrice} DH
               </span>
             )}

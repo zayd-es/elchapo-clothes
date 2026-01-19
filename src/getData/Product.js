@@ -1,9 +1,12 @@
 import axios from "axios";
 
+// هاد السطر كايجيب الرابط من Vercel إلا كان كاين، وإلا ماكانش كايخدم ب localhost
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:1337";
+
 export const geNewArrivalsProducts = async () => {
   try {
-    // حيدنا localhost باش يخدم الـ Proxy اللي صاوبنا في vite.config.js
-    const data = await axios.get("/api/products?filters[NewArrivals]=true&populate=*");
+    // زدنا BASE_URL قبل من الرابط
+    const data = await axios.get(`${BASE_URL}/api/products?filters[NewArrivals]=true&populate=*`);
     
     return {
       success: {
@@ -22,8 +25,8 @@ export const geNewArrivalsProducts = async () => {
 
 export const getCategories = async () => {
   try {
-    // نفس الشيء هنا، كنبدلو الرابط باش يبدا بـ /api ديريكت
-    const res = await axios.get("/api/categories?populate[products][populate]=images");
+    // نفس الشيء هنا، زدنا BASE_URL
+    const res = await axios.get(`${BASE_URL}/api/categories?populate[products][populate]=images`);
 
     return {
       success: res.data.data,

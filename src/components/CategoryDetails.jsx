@@ -16,7 +16,9 @@ const CategoryDetails = () => {
     const fetchProductDetails = async () => {
       try {
         const res = await axios.get(
-          `/api/categories/${documentId}?populate[products][populate]=images`
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/categories/${documentId}?populate[products][populate]=images`
         );
         setLoading(true);
         setCategoryDetails(res.data.data);

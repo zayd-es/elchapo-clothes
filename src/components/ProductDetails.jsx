@@ -10,7 +10,11 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const res = await axios.get(`/api/products/${documentId}?populate=*`);
+        const res = await axios.get(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/products/${documentId}?populate=*`
+        );
         setProductDetails(res.data.data); // Changed from res to res.data
       } catch (error) {
         console.log(error);

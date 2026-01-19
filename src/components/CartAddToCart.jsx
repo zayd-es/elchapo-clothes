@@ -31,6 +31,7 @@ const CartAddToCart = ({ item }) => {
     if (item.quantity + num < 1) return;
     addToCart({ ...item, quantity: num });
   };
+  const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:1337";
 
   return (
     <div data-aos="fade-up" className="mb-6 group">
@@ -42,7 +43,7 @@ const CartAddToCart = ({ item }) => {
         <div className="flex flex-wrap justify-center gap-4">
           <div className="w-24 h-24 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 flex-shrink-0">
             <img
-              src={`${item.images[0]?.url}`}
+              src={`${BASE_URL}${item.images[0]?.url}`}
               className="w-full h-full object-cover"
               alt={item.name}
             />

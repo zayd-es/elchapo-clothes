@@ -39,7 +39,10 @@ const Checkout = () => {
     };
 
     try {
-      await axios.post("/api/orders", orderData);
+      await axios.post(
+        ` ${import.meta.env.VITE_API_URL}/api/orders`,
+        orderData
+      );
       clearCart();
       setOrderDone(true);
     } catch (error) {
