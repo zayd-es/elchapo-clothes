@@ -1,16 +1,17 @@
 module.exports = [
   'strapi::logger',
   'strapi::errors',
-  'strapi::security',
-{
+  'strapi::security', // هادي خاص تبقى هي الأولى
+  {
     name: 'strapi::cors',
     config: {
-      origin: ['*'],
+      origin: ['*'], // هادي كتعني أي واحد يقدر ياخد السلعة
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
       headers: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
       keepHeaderOnError: true,
     },
-  },  'strapi::poweredBy',
+  },
+  'strapi::poweredBy',
   'strapi::query',
   'strapi::body',
   'strapi::session',

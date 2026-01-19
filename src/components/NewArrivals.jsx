@@ -89,15 +89,15 @@ const NewArrivals = () => {
             }}
           >
             <div className="">
-              {newArrivals.map((product) => (
-                <SwiperSlide>
-                  <NewArrivalsCard
-                    key={product.id}
-                    product={product}
-                    isNew={true}
-                  />
-                </SwiperSlide>
-              ))}
+              {newArrivals && newArrivals.length > 0 ? (
+                newArrivals.map((product) => (
+                  <SwiperSlide key={product.id}>
+                    <NewArrivalsCard product={product} isNew={true} />
+                  </SwiperSlide>
+                ))
+              ) : (
+                <p>Loading products...</p>
+              )}
             </div>
           </Swiper>
           <div className="w-full flex-col  md:flex items-center mt-6  justify-between">

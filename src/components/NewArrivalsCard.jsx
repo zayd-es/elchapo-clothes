@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-// هاد السطر كايعرف الرابط أوتوماتيكيا: واش ngrok (في Vercel) ولا localhost (في البيسي)
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:1337";
+// جني من اللخر: لصق الرابط ديال ngrok ديريكت هنا بحال اللي درتي ف الـ API
+const BASE_URL = "https://chancelled-imaginative-dagmar.ngrok-free.dev";
 
 const NewArrivalsCard = ({ product, isNew }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // دالة بسيطة كتلصق الرابط الأساسي مع رابط التصويرة
+  // دالة لجلب الصور مع حماية في حالة كانت الصور undefined
   const getImgUrl = (index) => {
-    const image = product.images?.[index];
-    if (!image) return "https://via.placeholder.com/600x800?text=ELCHAPO44";
-
-    // نلصقو BASE_URL مع الـ url ديال التصويرة ديريكت
-    return `${BASE_URL}${image.url}`;
+    const images = product?.images;
+    if (!images || !images[index]) {
+      return "https://via.placeholder.com/600x800?text=ELCHAPO44";
+    }
+    return `${BASE_URL}${images[index].url}`;
   };
+
+  if (!product) return null; // حماية إضافية
 
   return (
     <div
@@ -36,13 +38,13 @@ const NewArrivalsCard = ({ product, isNew }) => {
         <div className="relative aspect-[3/4] overflow-hidden bg-zinc-50">
           <img
             className={`w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
-              isHovered && product.images[1] ? "opacity-0" : "opacity-100"
+              isHovered && product.images?.[1] ? "opacity-0" : "opacity-100"
             }`}
             src={getImgUrl(0)}
-            alt={product.name}
+            alt={product.name || "Product"}
           />
 
-          {product.images[1] && (
+          {product.images?.[1] && (
             <img
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
                 isHovered ? "opacity-100" : "opacity-0"
