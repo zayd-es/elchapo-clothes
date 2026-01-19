@@ -1,41 +1,48 @@
 import axios from "axios";
 
-// هاد السطر كايجيب الرابط من Vercel إلا كان كاين، وإلا ماكانش كايخدم ب localhost
+// الرابط الأساسي: كيقرأ من Vercel أو كيرجع لـ Localhost
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:1337";
 
 export const geNewArrivalsProducts = async () => {
   try {
-    // زدنا BASE_URL قبل من الرابط
-    const data = await axios.get(`${BASE_URL}/api/products?filters[NewArrivals]=true&populate=*`);
+    const response = await axios.get(`${BASE_URL}/api/products?filters[NewArrivals]=true&populate=*`);
     
+    // Strapi V5 كيرجع البيانات ف response.data.data
+    // ولكن بعض المرات الترتيب كيختلف، هاد السطر كايضمن لينا ديما نلقاو المصفوفة (Array)
+    const result = response.data.data || response.data;
+
     return {
       success: {
-        data: data?.data?.data,
-        meta: data?.data?.meta
+        data: Array.isArray(result) ? result : [], // كنأكدو بلي راها Array باش .map() ما تفرقعش
+        meta: response.data.meta || {}
       },
       error: null
-    }
+    };
   } catch (error) {
+    console.error("Error fetching products:", error);
     return {
-      success: null,
+      success: { data: [], meta: {} }, // كنرجعو Array خاوية ف حالة الخطأ باش السيت ما يتبلوكاش
       error: error?.response?.data?.error?.message || 'Data Not Found'
-    }
+    };
   }
 };
 
 export const getCategories = async () => {
   try {
-    // نفس الشيء هنا، زدنا BASE_URL
-    const res = await axios.get(`${BASE_URL}/api/categories?populate[products][populate]=images`);
+    const response = await axios.get(`${BASE_URL}/api/categories?populate[products][populate]=images`);
+    
+    // نفس المنطق لضمان وصول البيانات بشكل صحيح
+    const result = response.data.data || response.data;
 
     return {
-      success: res.data.data,
-      meta: res.data.meta,
+      success: Array.isArray(result) ? result : [],
+      meta: response.data.meta || {},
       error: null,
     };
   } catch (error) {
+    console.error("Error fetching categories:", error);
     return {
-      success: null,
+      success: [],
       meta: null,
       error: error?.response?.data?.error?.message || "Data Not Found",
     };
