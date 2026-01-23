@@ -2,8 +2,9 @@ import { API_URL } from "@/lib/utils";
 import axios from "axios";
   export const geNewArrivalsProducts = async () => {
       try {
-        const data = await axios.get(`${API_URL}/products?filters[NewArrivals]=true&populate=*`);
-        // console.log(data)
+const data = await axios.get(
+      `${API_URL}/products?filters[NewArrivals]=true&populate[images]=*&populate[category]=*`
+    );        // console.log(data)
     return {
         success:{
             data: data?.data?.data,
