@@ -4,27 +4,12 @@ import { Link } from "react-router-dom";
 
 const NewArrivalsCard = ({ product, isNew }) => {
   const [isHovered, setIsHovered] = useState(false);
-
+  console.log(product);
   // Nafss l-logic li khddam lik f Details
   const getImgUrl = (index) => {
     if (!product.images || !product.images[index]) {
       return "https://via.placeholder.com/600x800?text=ELCHAPO44";
     }
-
-    const img = product.images[index];
-    // Strapi v5 tqder tkon f item direct aw f attributes
-    const rawUrl = img.url || img.url;
-
-    if (!rawUrl) return "https://via.placeholder.com/600x800?text=NO+URL";
-
-    // Ila kan URL kamel fih https (bhal Cloudinary li khddam lik f details)
-    if (rawUrl.startsWith("http")) {
-      return rawUrl;
-    }
-
-    // Ila kan path local (ghir bach t-koun secure)
-    const STRAPI_URL = "https://celebrated-spirit-7a9f04a7e1.strapiapp.com";
-    return `${STRAPI_URL}${rawUrl.startsWith("/") ? rawUrl : "/" + rawUrl}`;
   };
 
   return (
