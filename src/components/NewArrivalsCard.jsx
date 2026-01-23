@@ -60,9 +60,7 @@ const NewArrivalsCard = ({ product, isNew }) => {
           <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">
             {product.category?.name || "Streetwear"}
           </p>
-          <h3 className="text-sm font-bold uppercase tracking-tight text-black mt-1">
-            {product.name}
-          </h3>
+          <h3 className="text-sm font-bold uppercase tracking-tight text-black mt-1"></h3>
           <div className="flex items-center gap-3 pt-2">
             <span className="text-sm font-black text-black">
               {product.price} DH
