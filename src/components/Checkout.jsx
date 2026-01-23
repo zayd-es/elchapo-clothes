@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useShoppingCartContext } from "./context/CartContext";
 import axios from "axios";
+import { API_URL } from "@/lib/utils";
 
 const Checkout = () => {
   const { cartItems, getTotalPrice, clearCart } = useShoppingCartContext();
@@ -39,7 +40,7 @@ const Checkout = () => {
     };
 
     try {
-      await axios.post(" /api/orders", orderData);
+      await axios.post(`${API_URL}/api/orders`, orderData);
       clearCart();
       setOrderDone(true);
     } catch (error) {
